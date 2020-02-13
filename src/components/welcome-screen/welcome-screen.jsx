@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {PropValidator} from '../../prop-validator/prop-validator.jsx';
 
 const WelcomeScreen = (props) => {
   const {errorsCount, onWelcomeButtonClick} = props;
@@ -25,8 +25,8 @@ const WelcomeScreen = (props) => {
 };
 
 WelcomeScreen.propTypes = {
-  errorsCount: PropTypes.number.isRequired,
-  onWelcomeButtonClick: PropTypes.func.isRequired
+  errorsCount: PropValidator.ERRORS_COUNT,
+  onWelcomeButtonClick: PropValidator.ON_WELCOME_BUTTON_CLICK
 };
 
 export default WelcomeScreen;
