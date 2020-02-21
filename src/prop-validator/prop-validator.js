@@ -24,7 +24,16 @@ const PropValidator = {
       src: PropTypes.string.isRequired,
     }).isRequired,
     type: PropTypes.oneOf([GameType.ARTIST, GameType.GENRE]).isRequired,
-  }).isRequired
+  }).isRequired,
+  QUESTION_TYPE: PropTypes.oneOf([GameType.ARTIST, GameType.GENRE]).isRequired,
+  NODES: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  IS_PLAYING: PropTypes.bool.isRequired,
+  SRC: PropTypes.string.isRequired,
+  ON_PLAY_BUTTON_CLICK: PropTypes.func.isRequired,
+  RENDER_PLAYER: PropTypes.func.isRequired
 };
 
 export {PropValidator};

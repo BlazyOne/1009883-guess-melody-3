@@ -1,5 +1,5 @@
 import React from 'react';
-import {PropValidator} from '../../prop-validator/prop-validator.jsx';
+import {PropValidator} from '../../prop-validator/prop-validator.js';
 
 const WelcomeScreen = (props) => {
   const {errorsCount, onWelcomeButtonClick} = props;
