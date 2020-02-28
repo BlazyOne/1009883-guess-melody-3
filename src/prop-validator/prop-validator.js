@@ -33,7 +33,11 @@ const PropValidator = {
   IS_PLAYING: PropTypes.bool.isRequired,
   SRC: PropTypes.string.isRequired,
   ON_PLAY_BUTTON_CLICK: PropTypes.func.isRequired,
-  RENDER_PLAYER: PropTypes.func.isRequired
+  RENDER_PLAYER: PropTypes.func.isRequired,
+  ON_USER_ANSWER: PropTypes.func.isRequired,
+  STEP: PropTypes.number.isRequired,
+  COUNT: PropTypes.number.isRequired,
+  MISTAKES: PropTypes.number.isRequired
 };
 
 export {PropValidator};

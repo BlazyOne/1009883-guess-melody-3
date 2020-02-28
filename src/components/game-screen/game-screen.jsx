@@ -1,10 +1,13 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {PropValidator} from '../../prop-validator/prop-validator';
+import Mistakes from '../mistakes/mistakes.jsx';
 
 const GameScreen = (props) => {
   const {
     type,
     children,
+    mistakes
   } = props;
 
   return (
@@ -20,11 +23,9 @@ const GameScreen = (props) => {
             style={{filter: `url(#blur)`, transform: `rotate(-90deg) scaleY(-1)`, transformOrigin: `center`}} />
         </svg>
 
-        <div className="game__mistakes">
-          <div className="wrong" />
-          <div className="wrong" />
-          <div className="wrong" />
-        </div>
+        <Mistakes
+          count={mistakes}
+        />
       </header>
 
       {children}
@@ -34,7 +35,13 @@ const GameScreen = (props) => {
 
 GameScreen.propTypes = {
   type: PropValidator.QUESTION_TYPE,
-  children: PropValidator.NODES
+  children: PropValidator.NODES,
+  mistakes: PropValidator.MISTAKES
 };
 
-export default GameScreen;
+const mapStateToProps = (state) => ({
+  mistakes: state.mistakes
+});
+
+export {GameScreen};
+export default connect(mapStateToProps)(GameScreen);
