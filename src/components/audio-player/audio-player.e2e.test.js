@@ -17,12 +17,13 @@ it(`Should play button be pressed`, () => {
   const audioPlayer = mount(
       <AudioPlayer
         isPlaying={true}
+        isLoading={false}
         onPlayButtonClick={onPlayButtonClick}
         src={``}
-      />
+      >
+        <audio/>
+      </AudioPlayer>
   );
-
-  audioPlayer.instance()._audioRef.current.oncanplaythrough();
 
   const playButton = audioPlayer.find(`button.track__button`);
 
