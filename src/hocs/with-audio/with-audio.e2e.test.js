@@ -21,15 +21,17 @@ Player.propTypes = {
   children: PropValidator.NODES
 };
 
-it(`Checks that HOC's callback turn on audio (play)`, () => {
+it(`Checks that callback gets called on play button click`, () => {
+  const onPlayButtonClick = jest.fn();
   const PlayerWrapped = withAudio(Player);
   const wrapper = mount(<PlayerWrapped
     isPlaying={false}
-    onPlayButtonClick={() => {}}
+    onPlayButtonClick={onPlayButtonClick}
     src=""
   />);
 
   window.HTMLMediaElement.prototype.play = () => {};
+  window.HTMLMediaElement.prototype.pause = () => {};
 
   const {_audioRef} = wrapper.instance();
 
@@ -39,26 +41,5 @@ it(`Checks that HOC's callback turn on audio (play)`, () => {
 
   wrapper.find(`button`).simulate(`click`);
 
-  expect(_audioRef.current.play).toHaveBeenCalledTimes(1);
-});
-
-it(`Checks that HOC's callback turn off audio (pause)`, () => {
-  const PlayerWrapped = withAudio(Player);
-  const wrapper = mount(<PlayerWrapped
-    isPlaying={true}
-    onPlayButtonClick={() => {}}
-    src=""
-  />);
-
-  window.HTMLMediaElement.prototype.pause = () => {};
-
-  const {_audioRef} = wrapper.instance();
-
-  jest.spyOn(_audioRef.current, `pause`);
-
-  wrapper.instance().componentDidMount();
-
-  wrapper.find(`button`).simulate(`click`);
-
-  expect(_audioRef.current.pause).toHaveBeenCalledTimes(1);
+  expect(onPlayButtonClick).toHaveBeenCalledTimes(1);
 });

@@ -48,7 +48,10 @@ const PropValidator = {
   GENRE_ANSWER_ID: PropTypes.number.isRequired,
   GENRE_USER_ANSWER: PropTypes.bool.isRequired,
   ON_REPLAY_BUTON_CLICK: PropTypes.func.isRequired,
-  RESET_GAME: PropTypes.func.isRequired
+  RESET_GAME: PropTypes.func.isRequired,
+  AUTHORIZATION_STATUS: PropTypes.string.isRequired,
+  LOGIN: PropTypes.func.isRequired,
+  ON_SUBMIT: PropTypes.func.isRequired
 };
 
 export {PropValidator};

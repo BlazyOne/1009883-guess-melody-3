@@ -1,8 +1,10 @@
 import React, {PureComponent} from 'react';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {ActionCreator} from '../../reducer.js';
+import {ActionCreator} from '../../reducer/game/game.js';
+import {AuthorizationStatus} from '../../reducer/user/user.js';
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import AuthScreen from '../auth-screen/auth-screen.jsx';
 import GameScreen from '../game-screen/game-screen.jsx';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
@@ -12,6 +14,10 @@ import {PropValidator} from '../../prop-validator/prop-validator.js';
 import {GameType} from '../../const.js';
 import withActivePlayer from '../../hocs/with-active-player/with-active-player.jsx';
 import withUserAnswer from '../../hocs/with-user-answer/with-user-answer.jsx';
+import {getStep, getMistakes, getMaxMistakes} from '../../reducer/game/selectors.js';
+import {getQuestions} from '../../reducer/data/selectors.js';
+import {getAuthorizationStatus} from '../../reducer/user/selectors.js';
+import {Operation as UserOperation} from '../../reducer/user/user.js';
 
 const GenreQuestionScreenWrapped = withActivePlayer(withUserAnswer(GenreQuestionScreen));
 const ArtistQuestionScreenWrapped = withActivePlayer(ArtistQuestionScreen);
@@ -19,6 +25,8 @@ const ArtistQuestionScreenWrapped = withActivePlayer(ArtistQuestionScreen);
 class App extends PureComponent {
   _renderGameScreen() {
     const {
+      authorizationStatus,
+      login,
       maxMistakes,
       mistakes,
       questions,
@@ -47,13 +55,24 @@ class App extends PureComponent {
     }
 
     if (step >= questions.length) {
-      return (
-        <WinScreen
-          questionsCount={questions.length}
-          mistakesCount={mistakes}
-          onReplayButtonClick={resetGame}
-        />
-      );
+      if (authorizationStatus === AuthorizationStatus.AUTH) {
+        return (
+          <WinScreen
+            questionsCount={questions.length}
+            mistakesCount={mistakes}
+            onReplayButtonClick={resetGame}
+          />
+        );
+      } else if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
+        return (
+          <AuthScreen
+            onReplayButtonClick={resetGame}
+            onSubmit={login}
+          />
+        );
+      }
+
+      return null;
     }
 
     if (question) {
@@ -62,6 +81,7 @@ class App extends PureComponent {
           return (
             <GameScreen
               type={question.type}
+              mistakes={mistakes}
             >
               <ArtistQuestionScreenWrapped
                 question={question}
@@ -73,6 +93,7 @@ class App extends PureComponent {
           return (
             <GameScreen
               type={question.type}
+              mistakes={mistakes}
             >
               <GenreQuestionScreenWrapped
                 question={question}
@@ -107,6 +128,12 @@ class App extends PureComponent {
               onAnswer={() => {}}
             />
           </Route>
+          <Route exact path="/dev-auth">
+            <AuthScreen
+              onReplayButtonClick={() => {}}
+              onSubmit={() => {}}
+            />
+          </Route>
         </Switch>
       </BrowserRouter>
     );
@@ -114,6 +141,8 @@ class App extends PureComponent {
 }
 
 App.propTypes = {
+  authorizationStatus: PropValidator.AUTHORIZATION_STATUS,
+  login: PropValidator.LOGIN,
   maxMistakes: PropValidator.ERRORS_COUNT,
   mistakes: PropValidator.COUNT,
   questions: PropValidator.QUESTIONS,
@@ -124,13 +153,17 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  step: state.step,
-  maxMistakes: state.maxMistakes,
-  questions: state.questions,
-  mistakes: state.mistakes
+  authorizationStatus: getAuthorizationStatus(state),
+  step: getStep(state),
+  maxMistakes: getMaxMistakes(state),
+  questions: getQuestions(state),
+  mistakes: getMistakes(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  login(authData) {
+    dispatch(UserOperation.login(authData));
+  },
   onWelcomeButtonClick() {
     dispatch(ActionCreator.incrementStep());
   },

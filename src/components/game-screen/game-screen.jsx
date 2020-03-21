@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {PropValidator} from '../../prop-validator/prop-validator';
 import Mistakes from '../mistakes/mistakes.jsx';
+import {getMistakes} from '../../reducer/game/selectors.js';
 
 const GameScreen = (props) => {
   const {
@@ -40,7 +41,7 @@ GameScreen.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  mistakes: state.mistakes
+  mistakes: getMistakes(state)
 });
 
 export {GameScreen};
