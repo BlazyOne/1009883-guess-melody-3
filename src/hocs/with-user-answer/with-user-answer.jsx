@@ -19,6 +19,11 @@ const withUserAnswer = (Component) => {
       const {answers} = this.state;
 
       onAnswer(question, answers);
+
+      const answersCopy = answers.slice().fill(false);
+      this.setState({
+        answers: answersCopy
+      });
     }
 
     handleChange(i, value) {

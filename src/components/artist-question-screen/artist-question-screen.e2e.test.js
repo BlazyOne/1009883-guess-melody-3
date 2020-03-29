@@ -45,6 +45,7 @@ it(`Click on user answer should pass to the callback data-object from which this
     onAnswer={onAnswer}
     question={question}
     renderPlayer={() => {}}
+    step={0}
   />);
 
   const answerInputs = screen.find(`input`);

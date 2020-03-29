@@ -51,7 +51,11 @@ const PropValidator = {
   RESET_GAME: PropTypes.func.isRequired,
   AUTHORIZATION_STATUS: PropTypes.string.isRequired,
   LOGIN: PropTypes.func.isRequired,
-  ON_SUBMIT: PropTypes.func.isRequired
+  ON_SUBMIT: PropTypes.func.isRequired,
+  EXACT: PropTypes.bool.isRequired,
+  PATH: PropTypes.string.isRequired,
+  RENDER: PropTypes.func.isRequired,
+  GO_TO_WELCOME: PropTypes.func.isRequired
 };
 
 export {PropValidator};
