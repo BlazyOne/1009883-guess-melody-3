@@ -28,7 +28,6 @@ const ArtistQuestionScreenWrapped = withActivePlayer(ArtistQuestionScreen);
 class App extends PureComponent {
   _renderGameScreen() {
     const {
-      authorizationStatus,
       maxMistakes,
       mistakes,
       questions,
@@ -45,20 +44,6 @@ class App extends PureComponent {
           onWelcomeButtonClick={onWelcomeButtonClick}
         />
       );
-    }
-
-    if (mistakes >= maxMistakes) {
-      history.push(AppRoute.LOSE);
-    }
-
-    if (step >= questions.length) {
-      if (authorizationStatus === AuthorizationStatus.AUTH) {
-        history.push(AppRoute.RESULT);
-      } else if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
-        history.push(AppRoute.LOGIN);
-      }
-
-      return null;
     }
 
     if (question) {
@@ -92,6 +77,22 @@ class App extends PureComponent {
     }
 
     return null;
+  }
+
+  componentDidMount() {
+    const {mistakes, maxMistakes, step, questions, authorizationStatus} = this.props;
+
+    if (mistakes >= maxMistakes) {
+      history.push(AppRoute.LOSE);
+    }
+
+    if (step >= questions.length) {
+      if (authorizationStatus === AuthorizationStatus.AUTH) {
+        history.push(AppRoute.RESULT);
+      } else if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
+        history.push(AppRoute.LOGIN);
+      }
+    }
   }
 
   render() {
@@ -132,6 +133,22 @@ class App extends PureComponent {
         </Switch>
       </Router>
     );
+  }
+
+  componentDidUpdate() {
+    const {mistakes, maxMistakes, step, questions, authorizationStatus} = this.props;
+
+    if (mistakes >= maxMistakes) {
+      history.push(AppRoute.LOSE);
+    }
+
+    if (step >= questions.length) {
+      if (authorizationStatus === AuthorizationStatus.AUTH) {
+        history.push(AppRoute.RESULT);
+      } else if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
+        history.push(AppRoute.LOGIN);
+      }
+    }
   }
 }
 
