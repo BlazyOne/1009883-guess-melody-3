@@ -3,11 +3,15 @@ const GameType = {
   GENRE: `genre`
 };
 
+const ROUTER_BASENAME = `/`;
+
+const ROUTE_PREFIX = ROUTER_BASENAME === `/` ? `` : ROUTER_BASENAME;
+
 const AppRoute = {
-  LOGIN: `/login`,
-  LOSE: `/lose`,
-  RESULT: `/result`,
-  ROOT: `/`,
+  LOGIN: `${ROUTE_PREFIX}/login`,
+  LOSE: `${ROUTE_PREFIX}/lose`,
+  RESULT: `${ROUTE_PREFIX}/result`,
+  ROOT: ROUTER_BASENAME,
 };
 
 export {GameType, AppRoute};
